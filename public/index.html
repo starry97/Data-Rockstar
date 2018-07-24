@@ -19,6 +19,9 @@
 
   <!-- Our extensions's code -->
   <script src="./js/inventory-management.js"></script>
+
+  <script src="https://sdk.scdn.co/spotify-player.js"></script>
+
 </head>
 
 <body>
@@ -26,13 +29,14 @@
     <div>
       <h4>Spotify Extension</h4>
     </div>
+    <div id='song-id'></div>
     <form id="projectTasks">
       <table id="data_table" class="table table-condensed table-hover">
         <tr>
           <th>Select a Song You Would Like to Hear</th>
         </tr>
       </table>
-      <button type="submit" id="updateItem" class="btn btn-success" style="display: none">Update</button>
+      <button type="submit" id="updateItem" class="btn btn-success">Play</button>
     </form>
   </div>
 </body>

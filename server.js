@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/', function (req, res) {
-  updateWorkbook(req.body);
+  // updateWorkbook(req.body);
 
   res.send('Thanks for the data.');
 });
@@ -111,6 +111,7 @@ function getColumns () {
   }
 
   if (retArr.length > 0) {
+    console.log(retArr);
     return retArr;
   } else {
     return 'No column information found!';

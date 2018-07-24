@@ -1,9 +1,11 @@
 $(document).ready(function () {
+  $('#updateItem').click(function () {
+    console.log('helloooooo')
+  });
   let worksheet;
-  const wsName = 'Inventory';    // This is the sheet we'll use for updating task info
+  const wsName = 'song_data';    // This is the sheet we'll use for updating task info
 
-  function onSelectionChanged (marksEvent) {
-    console.log("DO I GET HERE?");
+  function onSelectionChanged (marksEvent) { 
     const sheetName = marksEvent.worksheet.name;
     marksEvent.getMarksAsync().then(function (selectedMarks) {
       handleSelectedMarks(selectedMarks, sheetName, true);
@@ -11,6 +13,8 @@ $(document).ready(function () {
   }
 
   function handleSelectedMarks (selectedMarks, sheetName, forceChangeSheet) {
+    const songId = selectedMarks['data'][0]['data'][0][2]['_value'];
+    document.getElementById('song-id').innerHTML = songId;
     // If we've got selected marks then process them and show our update button
     if (selectedMarks.data[1].totalRowCount > 0) {
       populateTable(selectedMarks.data[1]);
@@ -31,9 +35,9 @@ $(document).ready(function () {
         worksheet = ws;
       }
     }
-
     // Add mark selection event listener to our sheet
     worksheet.addEventListener(tableau.TableauEventType.MarkSelectionChanged, onSelectionChanged);
+
 
     console.log('"Extension Initialized. Running in dashboard named ' + dashboard.name);
     console.log('Sheet info: ' + worksheet.name);
@@ -92,6 +96,7 @@ $(document).ready(function () {
   }
 
   $('form').submit(function (event) {
+    console.log('clicked');
     event.preventDefault();
     let formInputs = $('form#projectTasks :input[type="text"]');
     let postData = [];
@@ -116,3 +121,44 @@ $(document).ready(function () {
     // event.preventDefault();
   });
 });
+
+window.onSpotifyWebPlaybackSDKReady = () => {
+  // You can now initialize Spotify.Player and use the SDK
+  console.log('initialized');
+  const play = ({
+    spotify_uri,
+    playerInstance: {
+      _options: {
+        getOAuthToken,
+        id
+      }
+    }
+  }) => {
+    getOAuthToken(access_token => {
+      fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ uris: [spotify_uri] }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${access_token}`
+        },
+      });
+    });
+  };
+  
+  play({
+    playerInstance: new Spotify.Player({
+      name: 'Carly Rae Jepsen Player',
+      getOAuthToken: callback => {
+        // Run code to get a fresh access token
+        // const token = {
+        //   "id": "f3167af078984a73a2193bddc4bb30d6", "secret": "d763962d74754a2682aa890599d263b7"
+        // };
+
+        callback(token);
+      },
+      volume: 0.5
+    })
+    
+  });
+};
