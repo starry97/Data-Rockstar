@@ -2,43 +2,74 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project Management Extension</title>
-
-  <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-
-  <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-  <!-- Extensions API Library (this will be hosted on a CDN eventually) -->
-  <script src="./js/tableau.extensions.0.12.7.js"></script>
-
-  <script src="https://sdk.scdn.co/spotify-player.js"></script>
-
-  <!-- Our extensions's code -->
-  <script src="./js/index.js"></script>
-
+    <title>Spotify Web Playback SDK Quick Start Tutorial</title>
 </head>
 
 <body>
-  <div class="container">
-    <div>
-      <h4>Spotify Extension</h4>
-    </div>
-    <div id='song-id'></div>
-    <form id="projectTasks">
-      <table id="data_table" class="table table-condensed table-hover">
-        <tr>
-          <th>Select a Song You Would Like to Hear</th>
-        </tr>
-      </table>
-      <button type="submit" id="updateItem" class="btn btn-success">Play</button>
-    </form>
-  </div>
+    <h1>Spotify Web Playback SDK Quick Start Tutorial</h1>
+    <h2>Open your console log:
+        <code>View > Developer > JavaScript Console</code>
+    </h2>
+
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script>
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            const token = 'BQBxKPrpyS-PN7xWN3j0SY9hY83iPEOUJIthmEYHj4tj43OHa1H99yYzwQwMd58PwB4lTYdt8vYQi_hGUr72Qac7-8R2TkLQTrZlU_YbPckRpBa9y4k7HKYOMp5dcUpCBmGyAtY5h46lVrZ3G_3qG-UpmlgehD7EvGwLEw';
+            const player = new Spotify.Player({
+                name: 'Tableau Spotify Player',
+                getOAuthToken: cb => { cb(token); }
+            });
+
+            // Error handling
+            player.addListener('initialization_error', ({ message }) => { console.error(message); });
+            player.addListener('authentication_error', ({ message }) => { console.error(message); });
+            player.addListener('account_error', ({ message }) => { console.error(message); });
+            player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+            // Playback status updates
+            player.addListener('player_state_changed', state => { console.log(state); });
+
+            // Ready
+            player.addListener('ready', ({ device_id }) => {
+                console.log('Ready with Device ID', device_id);
+                play({
+                    playerInstance: player,
+                    spotify_uri: 'spotify:track:6nnacTL5on2aVsRhVDNUSo',
+                });   
+            });
+
+            // Not Ready
+            player.addListener('not_ready', ({ device_id }) => {
+                console.log('Device ID has gone offline', device_id);
+            });
+
+            // Connect to the player!
+            player.connect();
+                
+
+            const play = ({
+                spotify_uri,
+                playerInstance: {
+                    _options: {
+                        getOAuthToken,
+                        id
+                    }
+                }
+            }) => {
+                getOAuthToken(access_token => {
+                    fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
+                        method: 'PUT',
+                        body: JSON.stringify({ uris: [spotify_uri] }),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${access_token}`
+                        },
+                    });
+                    console.log(`https://api.spotify.com/v1/me/player/play?device_id=${id}`);
+                });
+            };
+        };
+    </script>
 </body>
 
 </html>
