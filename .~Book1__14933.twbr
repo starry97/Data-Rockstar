@@ -307,7 +307,7 @@
       <size maxheight='800' maxwidth='1000' minheight='800' minwidth='1000' />
       <zones>
         <zone h='100000' id='2' type='layout-basic' w='100000' x='0' y='0'>
-          <zone h='98000' id='1' name='Sheet 1' w='63000' x='800' y='1000'>
+          <zone h='65750' id='1' name='Sheet 1' w='98400' x='800' y='33250'>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -315,8 +315,8 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone forceUpdate='true' h='98000' id='3' param='[com.tableau.extension.inventorymanagement].[0.9.0].[http://localhost:8765]' type='dashboard-object' w='35400' x='63800' y='1000'>
-            <add-in add-in-id='com.tableau.extension.inventorymanagement' extension-url='http://localhost:8765' extension-version='0.9.0' instance-id='1D844AA74A0F42B7AE38BD8BDA39BA7A'>
+          <zone forceUpdate='true' h='32250' id='4' param='[com.tableau.extension.inventorymanagement].[0.9.0].[http://localhost:8765]' type='dashboard-object' w='98400' x='800' y='1000'>
+            <add-in add-in-id='com.tableau.extension.inventorymanagement' extension-url='http://localhost:8765' extension-version='0.9.0' instance-id='84D38C16B1A24CC0AC2F9FA079838690'>
               <instance-settings />
               <type-settings>
                 <dashboard />
@@ -337,11 +337,6 @@
           </zone-style>
         </zone>
       </zones>
-    </dashboard>
-    <dashboard name='Dashboard 2'>
-      <style />
-      <size maxheight='800' maxwidth='1000' minheight='800' minwidth='1000' />
-      <zones />
     </dashboard>
   </dashboards>
   <windows source-height='30'>
@@ -371,10 +366,6 @@
       <viewpoints>
         <viewpoint name='Sheet 1' />
       </viewpoints>
-      <active id='-1' />
-    </window>
-    <window class='dashboard' name='Dashboard 2'>
-      <viewpoints />
       <active id='-1' />
     </window>
   </windows>
